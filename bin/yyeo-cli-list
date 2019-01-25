@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+const chalk = require('chalk')
+const TEMPLATES = require('../lib/constant'); // list repository
+
+process.on('exit', function () {
+    console.log();
+})
+
+console.log();
+console.log('  Available templates:');
+console.log();
+TEMPLATES.forEach(function (repo) {
+    console.log(`  ${chalk.yellow('★')}  ${chalk.blue(repo.name)} —— ${repo.description}`);
+})

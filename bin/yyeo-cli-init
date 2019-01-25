@@ -1,0 +1,78 @@
+#!/usr/bin/env node
+
+const program = require('commander')
+const chalk = require('chalk');
+const fs = require('fs');
+const ora = require('ora');
+const download = require('download-git-repo');
+const TEMPLATES = require('../lib/constant');
+const GITPATH = require('../lib/config');
+
+program
+    .usage('<template-name> [project-name]')
+    .description(`Run commands: ${chalk.green('yyeo-cli init')}, and ${chalk.green('<cmd>')} indicate required input, ${chalk.green('[cmd]')} indicate optional input.`);
+
+program.on('--help', function () {
+    console.log()
+    console.log('Examples:')
+    console.log(chalk.gray('  # init a new project with template'))
+    console.log(`  ${chalk.yellow('$')} ${chalk.green('yyeo-cli init react-admin-pro yourProName')}`)
+    console.log()
+    });
+
+program.parse(process.argv);
+
+const args = program.args;
+
+if(args.length < 1) {
+    return program.help();
+} else {
+    let flag = false;
+    const templateNames = [];
+    const template = args[0];
+    const newProjectName = args[1] || template;
+    // const branchName = args[2] ? `#${args[2]}` : '';
+    TEMPLATES.map(item => {
+        if (item.name === template){
+            flag = true;
+        }
+        templateNames.push(item.name);
+        return;
+    });
+    if (!flag) {
+        console.log();
+        console.error(chalk.red(`Error: Please enter the correct template name ${chalk.green('<')}${chalk.green(templateNames.join(' | '))}${chalk.green('>')}.`));
+        console.log();
+        return;
+    }
+    if (!fs.existsSync(newProjectName)){
+        const spinner = ora('Downloading the template project...');
+        spinner.start();
+        download(`${GITPATH}/${template}`, newProjectName, { clone: true }, function (err) {
+            if (err) {
+                console.log()
+                console.error(chalk.red(`${err}`));
+                spinner.fail();
+                return;
+            } else {
+                spinner.succeed();
+                console.log()
+                console.log(`  ${chalk.green('Have already generated the template project in current directory.')}`);
+                console.log()
+                console.log(`  Run project:`);
+                console.log()
+                console.log(`  ${chalk.yellow('$')} ${chalk.green(`cd ${newProjectName}`)}`);
+                console.log(`  ${chalk.yellow('$')} ${chalk.green('yarn | npm install')}`);
+                console.log(`  ${chalk.yellow('$')} ${chalk.green('yarn dev | npm run dev')}`);
+                return;
+            }
+        });
+    } else {
+        console.log()
+        console.error(`  ${chalk.red('The template project')} <${chalk.yellow(newProjectName)}> ${chalk.red('already exists.')}`);
+    }
+}
+
+process.on('exit', function () {
+    console.log()
+})
