@@ -30,7 +30,7 @@ $ yyeo-cli init templateName proName
 lib/config.js
 
 # GITPATH:  config githup username
-# TEMPLATES:  config your personal project name
+# TEMPLATES:  config your personal project name and description
 ```
 
 ## License
