@@ -6,10 +6,22 @@ const chalk = require('chalk');
 const existsSync = require('fs').existsSync;
 
 program
-  .option('--no-css', 'Don\'t generate css for component and routeComponent')
-  .option('--base [base]', 'Specify base path, default src')
-  .option('--entry [entry]', 'Specify entry path, default ${base}/src')
-  .parse(process.argv);
+    .usage('<module-name>');
+
+program.on('--help', function () {
+    console.log();
+    console.log('Examples:');
+    console.log(chalk.gray('  # Using a template to generate a new module, you can also configure the path'));
+    console.log(`  ${chalk.yellow('$')} ${chalk.green('yyeo-cli generate moduleName')}`);
+    console.log(`  ${chalk.yellow('$')} ${chalk.green('yyeo-cli generate pathname/moduleName')}`);
+    console.log()
+    });
+
+program.parse(process.argv);
+
+if(program.args.length < 1) {
+    return program.help();
+}
 
 const [name] = program.args;
 const source = join(__dirname, '../templete');

@@ -8,7 +8,7 @@ process.on('exit', function () {
 })
 
 console.log();
-console.log('  Available templates:');
+console.log('  Available git templates:');
 console.log();
 TEMPLATES.forEach(function (repo) {
     console.log(`  ${chalk.yellow('★')}  ${chalk.blue(repo.name)} —— ${repo.description}`);

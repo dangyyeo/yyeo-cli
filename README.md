@@ -11,17 +11,24 @@ $ npm install yyeo-cli -g
 ```
 ## Commands
 
-We have 2 commands: `list`, `init`.
+We have 3 commands: `list`, `init`, `generate`.
 
-### Display available templates
+### Display available templates -- list
 
 ```bash
 $ yyeo-cli list
 ```
 
-### Create app in current directory, using your template.
+### Create app in current directory, using your template -- init
 ```bash
 $ yyeo-cli init templateName proName
+```
+
+### Generate new module, using template -- generate
+
+```bash
+$ yyeo-cli generate moduleName
+$ yyeo-cli generate pathname/moduleName
 ```
 
 ## Configuration

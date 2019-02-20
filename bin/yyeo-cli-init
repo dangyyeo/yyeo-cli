@@ -14,7 +14,7 @@ program
 program.on('--help', function () {
     console.log()
     console.log('Examples:')
-    console.log(chalk.gray('  # init a new project with template'))
+    console.log(chalk.gray('  # Initialize a new project from the list of available templates in the current folder'))
     console.log(`  ${chalk.yellow('$')} ${chalk.green('yyeo-cli init react-admin-pro yourProName')}`)
     console.log()
     });
