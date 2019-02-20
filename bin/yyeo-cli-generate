@@ -1,0 +1,26 @@
+#!/usr/bin/env node
+
+const program = require('commander');
+const join = require('path').join;
+const chalk = require('chalk');
+const existsSync = require('fs').existsSync;
+
+program
+  .option('--no-css', 'Don\'t generate css for component and routeComponent')
+  .option('--base [base]', 'Specify base path, default src')
+  .option('--entry [entry]', 'Specify entry path, default ${base}/src')
+  .parse(process.argv);
+
+const [name] = program.args;
+const source = join(__dirname, '../templete');
+const destination = process.cwd();
+
+const dest = join(destination, 'src/pages', name);
+
+if (!existsSync(dest)){
+    require('../lib/generate')(name, source, destination);
+} else {
+    console.log()
+    console.error(`  ${chalk.red('Error: The files \'src/pages/')}${chalk.red(`${name}\'`)} ${chalk.red('have already existed!')}`);
+    console.log()
+}

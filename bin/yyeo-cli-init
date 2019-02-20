@@ -2,7 +2,7 @@
 
 const program = require('commander')
 const chalk = require('chalk');
-const fs = require('fs');
+const existsSync = require('fs').existsSync;
 const ora = require('ora');
 const download = require('download-git-repo');
 const { GITPATH, TEMPLATES } = require('../lib/config');
@@ -44,19 +44,20 @@ if(args.length < 1) {
         console.log();
         return;
     }
-    if (!fs.existsSync(newProjectName)){
+    if (!existsSync(newProjectName)){
         const spinner = ora('Downloading the template project...');
         spinner.start();
         download(`${GITPATH}/${template}`, newProjectName, { clone: true }, function (err) {
             if (err) {
-                console.log()
+                console.log();
+                console.error(chalk.red(`> Project init failed.`));
                 console.error(chalk.red(`${err}`));
                 spinner.fail();
                 return;
             } else {
                 spinner.succeed();
                 console.log()
-                console.log(`  ${chalk.green('Have already generated the template project in current directory.')}`);
+                console.log(`  ${chalk.green('Have already inited the project in current directory.')}`);
                 console.log()
                 console.log(`  Run project:`);
                 console.log()
@@ -68,7 +69,8 @@ if(args.length < 1) {
         });
     } else {
         console.log()
-        console.error(`  ${chalk.red('The template project')} <${chalk.yellow(newProjectName)}> ${chalk.red('already exists.')}`);
+        console.error(`  ${chalk.red('The project')} <${chalk.yellow(newProjectName)}> ${chalk.red('already exists.')}, please run new command for an empty folder!`);
+        process.exit(1);
     }
 }
 
